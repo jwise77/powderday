@@ -45,10 +45,10 @@ class Stars:
 
 def star_list_gen(boost,dx,dy,dz,reg,ds):
     print ('[SED_gen/star_list_gen]: reading in stars particles for SPS calculation')
-    mass = reg["starmasses"].value
-    positions = reg["starcoordinates"].value
-    age = reg["stellarages"].value
-    nstars = len(reg["stellarages"].value) 
+    mass = reg[("stars", "starmasses")].value
+    positions = reg[("stars", "starcoordinates")].value
+    age = reg[("stars", "stellarages")].value
+    nstars = len(reg[("stars", "stellarages")].value) 
     el = ['He', 'C', 'N', 'O', 'Ne', 'Mg', 'Si', 'S', 'Ca', 'Fe' ]
 
     try:                                                                                                                                                                
@@ -58,9 +58,9 @@ def star_list_gen(boost,dx,dy,dz,reg,ds):
                 el_str = ""
             else:
                 el_str = "_"+el[i-1]
-            metals[:, i] = reg["starmetals"+el_str].value
+            metals[:, i] = reg[("stars", "starmetals"+el_str)].value
     except:
-        metals = reg["starmetals"].value
+        metals = reg[("stars", "starmetals")].value
     print ('number of new stars =',nstars)
     
     #calculate the fsps interpolated metallicity
@@ -129,8 +129,8 @@ def star_list_gen(boost,dx,dy,dz,reg,ds):
 
         if ("diskstarcoordinates") in ds.derived_field_list:
             
-            disk_positions = reg[("diskstarcoordinates")].value
-            disk_masses =  reg[("diskstarmasses")].value
+            disk_positions = reg[("stars", "diskstarcoordinates")].value
+            disk_masses =  reg[("stars", "diskstarmasses")].value
             nstars_disk = len(disk_masses)
      
             #create the disk_list full of DiskStars objects
@@ -146,9 +146,9 @@ def star_list_gen(boost,dx,dy,dz,reg,ds):
         #Bulge Stars
 
 
-        if ("bulgestarcoordinates") in ds.derived_field_list:
-            bulge_positions = reg[("bulgestarcoordinates")].value
-            bulge_masses =  reg[("bulgestarmasses")].value
+        if ("stars", "bulgestarcoordinates") in ds.derived_field_list:
+            bulge_positions = reg[("stars", "bulgestarcoordinates")].value
+            bulge_masses =  reg[("stars", "bulgestarmasses")].value
             nstars_bulge = len(bulge_masses)
             
             #create the bulge_list full of BulgeStars objects
@@ -165,7 +165,7 @@ def star_list_gen(boost,dx,dy,dz,reg,ds):
     if cfg.par.SOURCES_IN_CENTER == True:
         for i in range(nstars):
             stars_list[i].positions[:] =  np.array([0,0,0])
-        if ("bulgestarcoordinates") in ds.derived_field_list:
+        if ("stars", "bulgestarcoordinates") in ds.derived_field_list:
             for i in range(nstars_bulge):
                 bulgestars_list[i].positions[:] =  np.array([0,0,0])
             for i in range(nstars_disk):
@@ -606,9 +606,9 @@ def get_gas_metals(ngas):
                 el_str = ""
             else:
                 el_str = "_"+el[i-1]
-            metals[:, i] = reg["gasmetals"+el_str].value
+            metals[:, i] = reg[("gas", "gasmetals"+el_str)].value
     except:
-        metals[:,0] = reg["gasmetals"].value
+        metals[:,0] = reg[("gas", "gasmetals")].value
     
     return metals
 

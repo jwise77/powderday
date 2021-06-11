@@ -252,7 +252,7 @@ if cfg.par.SED == True:
         # Run the Model
         if cfg.par.SKIP_RT == False:
             m.write(model.inputfile+'.sed', overwrite=True)
-            m.run(model.outputfile+'.sed', mpi=True,
+            m.run(model.outputfile+'.sed', mpi=True, logfile='hyperion.out',
                   n_processes=par.n_MPI_processes, overwrite=True)
 
 # see if the variable exists to make code backwards compatible
