@@ -27,7 +27,8 @@ import gc
 import random
 import os
 
-gc.set_threshold(0)
+#gc.set_threshold(0)
+gc.collect()
 
 if (len(sys.argv)) == 4:
     script, pardir, parfile, modelfile = sys.argv
@@ -90,6 +91,8 @@ field_add, ds = stream(fname)
 
 # figure out which tributary we're going to
 ds_type = ds.dataset_type
+del ds
+gc.collect()
 
 from powderday.pah.pah_source_create import pah_source_add
 

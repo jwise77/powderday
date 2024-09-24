@@ -49,10 +49,12 @@ def stream(fname):
     try: 
         ds = yt.load(fname,bounding_box = bbox)
         ds.index
+        ds.index.clear_all_data() # we only need the datatype, delete the rest
         print ('[front_end_controller:] bounding_box being used')
     except:
         ds = yt.load(fname)
         ds.index
+        ds.index.clear_all_data() # we only need the datatype, delete the rest
         print ('[front_end_controller:] NO bounding_box being used')
 
     ds_type = ds.dataset_type 
