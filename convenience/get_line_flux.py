@@ -44,7 +44,7 @@ def get_flux(lam_cent,left_edge,right_edge,lam, spec, fit_level):
         popt, pcov = curve_fit(func, lam_clip, spec_clip, p0=guess)
         fit = func(x, popt[0], popt[1], popt[2], popt[3])
         fit = fit - abs(popt[3])
-        line_flux = integrate.simps(fit,x)*cont
+        line_flux = integrate.simpson(fit,x)*cont
         y = func(lam_clip, popt[0], popt[1], popt[2], popt[3])
 
         ss_res = np.sum((spec_clip - y) ** 2)
