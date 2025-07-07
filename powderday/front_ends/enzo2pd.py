@@ -22,7 +22,7 @@ def enzo_field_add(fname,ds = None, starages = False):
 
     def _stellarages(field,data):
         age = ds.current_time.in_units('Gyr')-data[('newstars', 'creation_time')].in_units('Gyr')
-        age[np.where(age < 1.e-3)[0]] = 1.e-3
+        #age[np.where(age < 1.e-3)[0]] = 1.e-3
         return age
 
     def _starmasses(field,data):
