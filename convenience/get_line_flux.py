@@ -6,7 +6,10 @@
 from hyperion.model import ModelOutput
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy import integrate
+try:
+    from scipy.integrate import simps
+except:
+    from scipy.integrate import simpson as simps
 import astropy.units as u
 
 def func(x, *params):
@@ -44,7 +47,7 @@ def get_flux(lam_cent,left_edge,right_edge,lam, spec, fit_level):
         popt, pcov = curve_fit(func, lam_clip, spec_clip, p0=guess)
         fit = func(x, popt[0], popt[1], popt[2], popt[3])
         fit = fit - abs(popt[3])
-        line_flux = integrate.simps(fit,x)*cont
+        line_flux = simps(fit,x)*cont
         y = func(lam_clip, popt[0], popt[1], popt[2], popt[3])
 
         ss_res = np.sum((spec_clip - y) ** 2)

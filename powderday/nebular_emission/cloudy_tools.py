@@ -1,7 +1,11 @@
 from astropy import constants
 import itertools
 import numpy as np
-from scipy import integrate, spatial
+from scipy import spatial
+try:
+    from scipy.integrate import simpson as simps
+except:
+    from scipy.integrate import simps
 import powderday.config as cfg
 
 """
@@ -36,7 +40,7 @@ def calc_LogQ(nuin0, specin0, efrac=0.0, mstar=1.0, mfrac=1.0):
     nu = hlam[::-1]
     f_nu = hflu[::-1]
     integrand = f_nu / (h * nu)
-    logQ = np.log10(integrate.simps(integrand, x=nu)*(mstar/mfrac)*(1-efrac))
+    logQ = np.log10(simps(integrand, x=nu)*(mstar/mfrac)*(1-efrac))
     return logQ
 
    
@@ -226,7 +230,7 @@ def get_DIG_logU(lam, sed, luminosity, cell_width):
     # Normalizing the spectrum such that the luminosity above the lyman limit
     # is equal to the given luminosity
     inds, = np.where(nu <= nu_0)
-    sed_lum = integrate.simps(sed[inds][::-1], x=nu[inds][::-1])
+    sed_lum = simps(sed[inds][::-1], x=nu[inds][::-1])
     fac = luminosity / sed_lum
     sed = sed * fac
     
@@ -235,7 +239,7 @@ def get_DIG_logU(lam, sed, luminosity, cell_width):
     sed_in = sed[inds][::-1]
     nu_in = nu[inds][::-1]
     integrand = sed_in / (h * nu_in)
-    Q = integrate.simps(integrand, x=nu_in)
+    Q = simps(integrand, x=nu_in)
     
     # We consider that the ionizing photons are striking the cell from all 6 sides
     # thus to get the rate of ionizing photons per unit area we divide by 6*cell_width**2
